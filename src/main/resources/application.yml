@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: webflux-concurrency
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/webflux_study?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  # JdbcTemplate Batch Insert 최적화
+  jdbc:
+    template:
+      fetch-size: 1000
+
+server:
+  port: 8010
+
+# WebClient 설정
+webclient:
+  max-in-memory-size: 10485760  # 10MB
+  connect-timeout: 5000
+  read-timeout: 30000
+
+# Mock API 설정
+mock:
+  base-url: http://localhost:8010/mock
+  default-delay: 500  # ms
+
+# 수집 설정
+collector:
+  chunk-size: 99
+  batch-size: 1000
+  client-parallel: 10
+  chunk-parallel: 10
+
+logging:
+  level:
+    com.webflux.parallel: DEBUG
+    org.springframework.web.reactive: DEBUG
